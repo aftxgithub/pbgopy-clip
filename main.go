@@ -15,13 +15,13 @@ func main() {
 }
 
 func run() error {
-	clipboard := &clipboardProvider{}
+	var clipboard provider = &clipboardProvider{}
 
 	addr := os.Getenv("PBGOPY_SERVER")
 	if addr == "" {
 		return errors.New("put the pbgopy server's address into PBGOPY_SERVER environment variable")
 	}
-	server := &serverProvider{addr: addr}
+	var server provider = &serverProvider{addr: addr}
 
 	for {
 		time.Sleep(1 * time.Second)
