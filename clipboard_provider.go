@@ -1,6 +1,10 @@
 package main
 
-import "github.com/atotto/clipboard"
+import (
+	"time"
+
+	"github.com/atotto/clipboard"
+)
 
 type clipboardProvider struct {
 	lastClipboardContent string
@@ -13,6 +17,7 @@ func (c *clipboardProvider) hasNew() bool {
 		return false
 	}
 	if data != c.lastClipboardContent {
+		c.lastClipboardTs = time.Now().UnixNano()
 		return true
 	}
 	return false
