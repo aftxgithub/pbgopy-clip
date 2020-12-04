@@ -39,7 +39,7 @@ func run() error {
 				continue
 			}
 
-		} else if server.hasNew() && server.getLastTimestamp() > clipboard.getLastTimestamp() {
+		} else if server.hasNew() && server.getLastTimestamp() >= clipboard.getLastTimestamp() {
 			fmt.Println("Updating clipboard")
 			data, err := server.get()
 			if err != nil {
