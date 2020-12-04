@@ -28,11 +28,19 @@ Export the address of the server on each device you want their clipboard synced.
 export PBGOPY_SERVER=http://foo.bar:9090
 ```
 
-Start `pbgopy-clip`
+Start `pbgopy-clip` on each of the devices too
 
 ```shell
-pbgclip
+pbgopy-clip
 ```
 
 As long as pbgclip runs, the clipboard of the device will be kept in sync with the other devices,
 using the pbgopy server as a backend.
+
+## Build
+
+### Go
+
+```shell
+go get github.com/thealamu/pbgopy-clip
+```
