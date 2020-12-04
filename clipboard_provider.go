@@ -18,17 +18,17 @@ func (c *clipboardProvider) hasNew() bool {
 	return false
 }
 
-func (c *clipboardProvider) get() (error, string) {
+func (c *clipboardProvider) get() (string, error) {
 	data, err := clipboard.ReadAll()
 	if err != nil {
-		return err, ""
+		return "", err
 	}
 	c.lastClipboardContent = data
-	return nil, data
+	return data, nil
 }
 
-func (c *clipboardProvider) getTimestamp() (error, int64) {
-	return nil, c.lastClipboardTs
+func (c *clipboardProvider) getLastTimestamp() (int64, error) {
+	return c.lastClipboardTs, nil
 }
 
 func (c *clipboardProvider) put(data string) error {
