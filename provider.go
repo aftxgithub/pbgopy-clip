@@ -2,7 +2,7 @@ package main
 
 type provider interface {
 	hasNew() bool
-	get() (error, string)
-	getTimestamp() (error, int64)
+	get() (string, error)
+	getTimestamp() (int64, error)
 	put(string) error
 }
