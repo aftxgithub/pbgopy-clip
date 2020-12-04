@@ -18,7 +18,11 @@ func (s *serverProvider) hasNew() bool {
 	if err != nil {
 		return false
 	}
-	return lastTsFromServer > s.lastServerTs
+	if lastTsFromServer > s.lastServerTs {
+		s.lastServerTs = lastTsFromServer
+		return true
+	}
+	return false
 }
 
 func (s *serverProvider) get() (string, error) {
@@ -26,7 +30,7 @@ func (s *serverProvider) get() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if resp.Header.Get("Content-Type") != "text/plain" {
+	if !isPlainText(resp.Header.Get("Content-Type")) {
 		return "", errors.New("server content is not plain text")
 	}
 	data, err := ioutil.ReadAll(resp.Body)
@@ -65,4 +69,12 @@ func (s *serverProvider) put(data string) error {
 		return err
 	}
 	return nil
+}
+
+func isPlainText(ctype string) bool {
+	s := strings.Split(ctype, ";")
+	if len(s) < 1 {
+		return false
+	}
+	return s[0] == "text/plain"
 }
