@@ -15,7 +15,7 @@ func main() {
 }
 
 func run() error {
-	var clipboard provider = &clipboardProvider{}
+	var clipboard provider = newClipboardProvider()
 
 	addr := os.Getenv("PBGOPY_SERVER")
 	if addr == "" {
