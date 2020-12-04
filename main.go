@@ -26,38 +26,34 @@ func run() error {
 	for {
 		time.Sleep(1 * time.Second)
 
-		if clipboard.hasNew() {
-			if clipboard.lastClipboardTs > server.lastServerTs {
-				fmt.Println("Updating server")
-				data, err := clipboard.get()
-				if err != nil {
-					showError(err)
-					continue
-				}
-				err = server.put(data)
-				if err != nil {
-					showError(err)
-					continue
-				}
+		if clipboard.hasNew() && clipboard.getLastTimestamp() > server.getLastTimestamp() {
+			fmt.Println("Updating server")
+			data, err := clipboard.get()
+			if err != nil {
+				showError(err)
+				continue
+			}
+			err = server.put(data)
+			if err != nil {
+				showError(err)
+				continue
 			}
 
-		} else if server.hasNew() {
-			if server.lastServerTs > clipboard.lastClipboardTs {
-				fmt.Println("Updating clipboard")
-				data, err := server.get()
-				if err != nil {
-					showError(err)
-					continue
-				}
-				err = clipboard.put(data)
-				if err != nil {
-					showError(err)
-					continue
-				}
-
+		} else if server.hasNew() && server.getLastTimestamp() > clipboard.getLastTimestamp() {
+			fmt.Println("Updating clipboard")
+			data, err := server.get()
+			if err != nil {
+				showError(err)
+				continue
+			}
+			err = clipboard.put(data)
+			if err != nil {
+				showError(err)
+				continue
 			}
 
 		}
+
 	}
 }
 

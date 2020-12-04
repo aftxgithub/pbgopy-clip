@@ -32,8 +32,8 @@ func (c *clipboardProvider) get() (string, error) {
 	return data, nil
 }
 
-func (c *clipboardProvider) getLastTimestamp() (int64, error) {
-	return c.lastClipboardTs, nil
+func (c *clipboardProvider) getLastTimestamp() int64 {
+	return c.lastClipboardTs
 }
 
 func (c *clipboardProvider) put(data string) error {

@@ -14,7 +14,7 @@ type serverProvider struct {
 }
 
 func (s *serverProvider) hasNew() bool {
-	lastTsFromServer, err := s.getLastTimestamp()
+	lastTsFromServer, err := s.getServerTimestamp()
 	if err != nil {
 		return false
 	}
@@ -40,7 +40,11 @@ func (s *serverProvider) get() (string, error) {
 	return string(data), nil
 }
 
-func (s *serverProvider) getLastTimestamp() (int64, error) {
+func (s *serverProvider) getLastTimestamp() int64 {
+	return s.lastServerTs
+}
+
+func (s *serverProvider) getServerTimestamp() (int64, error) {
 	resp, err := http.Get(s.addr + "/lastupdated")
 	if err != nil {
 		return 0, err
