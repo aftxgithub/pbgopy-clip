@@ -9,7 +9,7 @@ var serverAddr string
 
 func main() {
 	if err := run(); err != nil {
-		fmt.Printf("%v\n", err)
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 }
@@ -19,5 +19,6 @@ func run() error {
 	if serverAddr == "" {
 		return fmt.Errorf("put the pbgopy server's address into PBGOPY_SERVER environment variable")
 	}
+
 	return nil
 }
