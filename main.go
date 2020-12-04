@@ -27,7 +27,6 @@ func run() error {
 		time.Sleep(1 * time.Second)
 
 		if clipboard.hasNew() && clipboard.getLastTimestamp() > server.getLastTimestamp() {
-			fmt.Println("Updating server")
 			data, err := clipboard.get()
 			if err != nil {
 				showError(err)
@@ -40,7 +39,6 @@ func run() error {
 			}
 
 		} else if server.hasNew() && server.getLastTimestamp() >= clipboard.getLastTimestamp() {
-			fmt.Println("Updating clipboard")
 			data, err := server.get()
 			if err != nil {
 				showError(err)
