@@ -11,6 +11,12 @@ type clipboardProvider struct {
 	lastClipboardTs      int64
 }
 
+func newClipboardProvider() *clipboardProvider {
+	return &clipboardProvider{
+		lastClipboardTs: time.Now().UnixNano(),
+	}
+}
+
 func (c *clipboardProvider) hasNew() bool {
 	data, err := clipboard.ReadAll()
 	if err != nil {
