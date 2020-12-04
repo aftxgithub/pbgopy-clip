@@ -1,10 +1,11 @@
 package main
 
 import (
+	"errors"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type serverProvider struct {
@@ -13,40 +14,55 @@ type serverProvider struct {
 }
 
 func (s *serverProvider) hasNew() bool {
+	lastTsFromServer, err := s.getLastTimestamp()
+	if err != nil {
+		return false
+	}
+	return lastTsFromServer > s.lastServerTs
+}
+
+func (s *serverProvider) get() (string, error) {
+	resp, err := http.Get(s.addr + "/")
+	if err != nil {
+		return "", err
+	}
+	if resp.Header.Get("Content-Type") != "text/plain" {
+		return "", errors.New("server content is not plain text")
+	}
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
+}
+
+func (s *serverProvider) getLastTimestamp() (int64, error) {
 	resp, err := http.Get(s.addr + "/lastupdated")
 	if err != nil {
-		log.Println(err)
-		return false
+		return 0, err
 	}
 	serverTsBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Println(err)
-		return false
+		return 0, err
 	}
 	if err := resp.Body.Close(); err != nil {
-		log.Println(err)
+		return 0, err
 	}
 	serverTs, err := strconv.ParseInt(string(serverTsBytes), 10, 64)
 	if err != nil {
-		log.Println(err)
-		return false
+		return 0, err
 	}
-
-	if serverTs > s.lastServerTs {
-		s.lastServerTs = serverTs
-		return true
-	}
-	return false
-}
-
-func (s *serverProvider) get() (error, string) {
-
-}
-
-func (s *serverProvider) getTimestamp() (error, int64) {
-
+	return serverTs, nil
 }
 
 func (s *serverProvider) put(data string) error {
-
+	req, err := http.NewRequest(http.MethodPut, s.addr+"/", strings.NewReader(data))
+	if err != nil {
+		return err
+	}
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	return nil
 }
