@@ -21,7 +21,7 @@ func run() error {
 	if addr == "" {
 		return errors.New("put the pbgopy server's address into PBGOPY_SERVER environment variable")
 	}
-	var server provider = &serverProvider{addr: addr}
+	var server provider = newServerProvider(addr)
 
 	for {
 		time.Sleep(1 * time.Second)

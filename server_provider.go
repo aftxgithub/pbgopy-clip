@@ -6,11 +6,19 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type serverProvider struct {
 	lastServerTs int64
 	addr         string
+}
+
+func newServerProvider(addr string) *serverProvider {
+	return &serverProvider{
+		lastServerTs: time.Now().UnixNano(),
+		addr:         addr,
+	}
 }
 
 func (s *serverProvider) hasNew() bool {
