@@ -14,8 +14,6 @@ You need to have a clipboard utitlity available. Please install xsel, xclip, wl-
 <br>
 Install [pbgopy](https://github.com/nakabonne/pbgopy), pbgopy-clip syncs clipboard data over the pbgopy server.
 
-**NB: The current release of pbgopy does not support the timestamp endpoint needed, please use [pbgopy](https://github.com/thealamu/pbgopy/tree/pbgopy-diverge) till I can get a patch merged. Sorry for any inconvenience.**
-
 ## Usage
 
 You need to start the pbgopy server. It listens on port 9090 by default.
