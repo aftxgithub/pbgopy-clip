@@ -1,0 +1,36 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: .
+    binary: pbgopy-clip
+    goos:
+      - freebsd
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm
+      - arm64
+      - 386
+      - ppc64le
+      - s390x
+      - mips64
+      - mips64le
+    goarm:
+      - 6
+      - 7
+    env:
+      - CGO_ENABLED=0
+    ldflags: -s -w -X github.com/thealamu/pbgopy-clip/commands.version={{.Version}} -X github.com/thealamu/pbgopy-clip/commands.commit={{.ShortCommit}} -X github.com/thealamu/pbgopy-clip/commands.date={{.Date}}
+
+archives:
+  - replacements:
+      386: 32-bit
+
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
